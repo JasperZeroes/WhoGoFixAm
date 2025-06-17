@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BookOpen, Users, Wrench, ArrowRight, Star, Shield, Clock, LayoutDashboard, CheckCircle } from 'lucide-react';
+import { BookOpen, Users, Wrench, ArrowRight, Star, Shield, Clock, LayoutDashboard, CheckCircle, Zap, MapPin, Phone, Heart } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import AuthModal from '../components/auth/AuthModal';
 
@@ -13,14 +13,15 @@ const HomePage: React.FC = () => {
   const features = [
     {
       icon: BookOpen,
-      title: 'Learn a Skill',
-      description: 'Empower yourself by learning hands-on vocational skills that can earn you real income. Whether you prefer online learning or want to visit a physical training center, WhoGoFixAm gives you access to skill-building opportunities.',
+      title: 'I Wan Learn Work',
+      pidginTitle: '👨🏽‍🏭 I wan learn work',
+      description: 'You wan learn handwork? No wahala! From plumbing to tailoring, welding to barbing — we get plenty skilled people wey go teach you proper proper.',
       color: 'text-blue-600',
       bgColor: 'bg-blue-50',
       link: '/learn',
       skills: [
         'Plumbing & Pipe Fitting',
-        'Electrical Installation & Repairs',
+        'Electrical Installation & Repairs', 
         'Welding & Metal Fabrication',
         'Tailoring & Fashion Design',
         'Hair Styling & Barbering',
@@ -30,12 +31,13 @@ const HomePage: React.FC = () => {
         'Makeup & Beauty Artistry',
         'Auto Mechanics'
       ],
-      cta: '🎓 Start with a free sample lesson or locate a verified center near you to begin your journey.'
+      cta: '🎓 Start with free sample lesson or find verified center near you make you begin your journey.'
     },
     {
       icon: Wrench,
-      title: 'Need a Fix?',
-      description: 'Get quick access to skilled professionals around you for any job — from home repairs to personal grooming. WhoGoFixAm helps you find trusted experts ready to help.',
+      title: 'I Need Person Wey Go Do Work',
+      pidginTitle: '🏠 I need person wey go do work',
+      description: 'Your tap spoil? Generator no dey start? You need person wey go fix am? We get plenty professionals wey dey ready to help you.',
       color: 'text-orange-600',
       bgColor: 'bg-orange-50',
       link: '/professionals/directory',
@@ -51,12 +53,13 @@ const HomePage: React.FC = () => {
         'Mechanics for car servicing and fixes',
         'House painters and decorators'
       ],
-      cta: '🔍 Use filters to search by location or skill — then call or message a professional directly.'
+      cta: '🔍 Use filter to search by location or skill — then call or message professional directly.'
     },
     {
       icon: Users,
-      title: 'Offer a Service',
-      description: 'Are you a skilled professional? Get more customers by listing your services on WhoGoFixAm. Reach people looking for the exact skills you have.',
+      title: 'I Sabi Do Work',
+      pidginTitle: '🧰 I sabi do work',
+      description: 'You don learn work finish, you dey find customer? Create your profile, show wetin you sabi, get verified, and people go dey reach you directly.',
       color: 'text-green-600',
       bgColor: 'bg-green-50',
       link: '/professionals/register',
@@ -77,21 +80,47 @@ const HomePage: React.FC = () => {
     }
   ];
 
+  const howItWorks = [
+    {
+      step: '1️⃣',
+      title: 'Pick Your Category',
+      description: 'Choose wetin you want do — Learn, Do, or Find. We dey for you.',
+      icon: Users
+    },
+    {
+      step: '2️⃣', 
+      title: 'Get Connected Sharp-Sharp',
+      description: 'Browse plenty skilled people or centers wey sabi the work.',
+      icon: Zap
+    },
+    {
+      step: '3️⃣',
+      title: 'Get the Work Done or Start to Learn',
+      description: 'From carpentry to tailoring, plumbing to tech work, we go hook you up. No wahala.',
+      icon: CheckCircle
+    }
+  ];
+
   const benefits = [
     {
-      icon: Star,
-      title: 'Quality Assured',
-      description: 'All service providers are verified and rated by the community'
-    },
-    {
       icon: Shield,
-      title: 'Secure Platform',
-      description: 'Safe and secure transactions with built-in protection'
+      title: 'Na Trusted People Only',
+      description: 'We dey verify ID and skills before we list anybody'
     },
     {
-      icon: Clock,
-      title: 'Quick Response',
-      description: 'Get matched with the right person in minutes, not hours'
+      icon: MapPin,
+      title: 'Near Your Area',
+      description: 'We go show you person wey dey close to you'
+    },
+    {
+      icon: Phone,
+      title: 'Easy to Contact',
+      description: 'Call, message or chat directly — no long thing'
+    },
+    {
+      icon: Heart,
+      title: 'Community Feel',
+      description: 'Like how neighbour dey refer better workman — na so we set am'
     }
   ];
 
@@ -113,7 +142,7 @@ const HomePage: React.FC = () => {
   const getPersonalizedCTA = () => {
     if (!currentUser || !userProfile?.role) {
       return {
-        primary: { text: 'Start Learning', link: '/learn' },
+        primary: { text: 'I Wan Learn Work', link: '/learn' },
         secondary: { text: 'Find Professionals', link: '/professionals/directory' }
       };
     }
@@ -139,7 +168,7 @@ const HomePage: React.FC = () => {
         };
       default:
         return {
-          primary: { text: 'Start Learning', link: '/learn' },
+          primary: { text: 'I Wan Learn Work', link: '/learn' },
           secondary: { text: 'Find Professionals', link: '/professionals/directory' }
         };
     }
@@ -172,33 +201,47 @@ const HomePage: React.FC = () => {
     <>
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-            <div className="text-center">
+        <section className="bg-gradient-to-br from-green-600 via-green-700 to-green-800 text-white relative overflow-hidden">
+          {/* Nigerian Flag Colors Accent */}
+          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-green-500 via-white to-green-500"></div>
+          
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative">
+            {/* Background Pattern */}
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute top-10 left-10 w-20 h-20 border-2 border-white rounded-full"></div>
+              <div className="absolute top-32 right-20 w-16 h-16 border-2 border-white rounded-lg rotate-45"></div>
+              <div className="absolute bottom-20 left-32 w-12 h-12 border-2 border-white rounded-full"></div>
+            </div>
+
+            <div className="text-center relative z-10">
               {currentUser && userProfile && (
                 <div className="mb-6">
-                  <p className="text-blue-100 text-lg">
+                  <p className="text-green-100 text-lg">
                     Welcome back, {userProfile.displayName || currentUser.email}!
                   </p>
                   {userProfile.role && (
-                    <p className="text-blue-200 text-sm">
-                      You're registered as a {userProfile.role.replace('-', ' ')}
+                    <p className="text-green-200 text-sm">
+                      You dey registered as {userProfile.role.replace('-', ' ')}
                     </p>
                   )}
                 </div>
               )}
               
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                Connect. Learn. Fix.
+              <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+                <span className="block text-yellow-300">You get work?</span>
+                <span className="block">We sabi who go do am.</span>
               </h1>
-              <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto">
-                The community platform where skills meet needs. Learn from experts, 
-                offer your services, or find someone to fix your problems.
+              <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-green-100">
+                Learn am. Do am. Fix am.
+              </h2>
+              <p className="text-xl md:text-2xl mb-8 text-green-100 max-w-4xl mx-auto leading-relaxed">
+                No worry, your plug don land! Whether you wan learn handwork, you sabi do work, 
+                or you dey find person wey go help you fix something — WhoGoFixAm na your sure connect.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button
                   onClick={() => navigate(cta.primary.link)}
-                  className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 shadow-lg flex items-center justify-center"
+                  className="bg-yellow-500 text-green-800 px-8 py-4 rounded-lg font-bold hover:bg-yellow-400 transition-colors duration-200 shadow-lg flex items-center justify-center text-lg"
                 >
                   {currentUser && userProfile?.role && (
                     <LayoutDashboard className="h-5 w-5 mr-2" />
@@ -207,7 +250,7 @@ const HomePage: React.FC = () => {
                 </button>
                 <Link
                   to={cta.secondary.link}
-                  className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors duration-200"
+                  className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-bold hover:bg-white hover:text-green-600 transition-colors duration-200 text-lg"
                 >
                   {cta.secondary.text}
                 </Link>
@@ -216,15 +259,45 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* Features Section */}
-        <section className="py-20">
+        {/* How It Works Section */}
+        <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                How WhoGoFixAm Works
+                💡 How E Dey Work
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Three simple ways to connect with your community and get things done
+                Three simple steps to connect with your community
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-8">
+              {howItWorks.map((step, index) => (
+                <div key={index} className="text-center group">
+                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100 mb-6 group-hover:bg-green-200 transition-colors">
+                    <span className="text-3xl">{step.step}</span>
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-600 text-lg">
+                    {step.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section className="py-20 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Wetin You Fit Do For WhoGoFixAm
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                Choose your path and make your hustle easier
               </p>
             </div>
             
@@ -232,26 +305,26 @@ const HomePage: React.FC = () => {
               {features.map((feature, index) => (
                 <div
                   key={index}
-                  className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-8"
+                  className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-8 border-l-4 border-green-500"
                 >
                   <div className={`inline-flex items-center justify-center w-16 h-16 rounded-lg ${feature.bgColor} mb-6`}>
                     <feature.icon className={`h-8 w-8 ${feature.color}`} />
                   </div>
                   
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-4">
-                    {feature.title}
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-2">
+                    {feature.pidginTitle}
                   </h3>
                   
-                  <p className="text-gray-600 mb-6 leading-relaxed">
+                  <p className="text-gray-600 mb-6 leading-relaxed text-lg">
                     {feature.description}
                   </p>
 
                   {/* Skills List */}
                   <div className="mb-6">
                     <h4 className="font-semibold text-gray-900 mb-3">
-                      {feature.title === 'Learn a Skill' ? 'What You Can Learn:' : 
-                       feature.title === 'Need a Fix?' ? 'Professionals You Can Find:' : 
-                       'Skills You Can Offer:'}
+                      {feature.title === 'I Wan Learn Work' ? 'Wetin You Fit Learn:' : 
+                       feature.title === 'I Need Person Wey Go Do Work' ? 'Professionals Wey You Fit Find:' : 
+                       'Skills Wey You Fit Offer:'}
                     </h4>
                     <div className="space-y-2">
                       {feature.skills.slice(0, 5).map((skill, skillIndex) => (
@@ -275,12 +348,12 @@ const HomePage: React.FC = () => {
                     </p>
                   </div>
 
-                  {feature.title === 'Offer a Service' ? (
+                  {feature.title === 'I Sabi Do Work' ? (
                     <button
                       onClick={handleOfferServiceClick}
                       className={`w-full ${feature.color.replace('text-', 'bg-')} text-white py-3 px-6 rounded-lg font-medium hover:opacity-90 transition-all duration-200 flex items-center justify-center group`}
                     >
-                      Get Started
+                      Start Dey Collect Work
                       <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
                     </button>
                   ) : (
@@ -288,7 +361,7 @@ const HomePage: React.FC = () => {
                       to={feature.link}
                       className={`w-full ${feature.color.replace('text-', 'bg-')} text-white py-3 px-6 rounded-lg font-medium hover:opacity-90 transition-all duration-200 flex items-center justify-center group`}
                     >
-                      Get Started
+                      {feature.title === 'I Wan Learn Work' ? 'Start Learning' : 'Find Person Now'}
                       <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
                     </Link>
                   )}
@@ -298,28 +371,28 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* Benefits Section */}
+        {/* Why WhoGoFixAm Section */}
         <section className="bg-white py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Why Choose WhoGoFixAm?
+                ⭐ Why WhoGoFixAm?
               </h2>
               <p className="text-xl text-gray-600">
-                Built by the community, for the community
+                Built by Nigerians, for Nigerians
               </p>
             </div>
             
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {benefits.map((benefit, index) => (
-                <div key={index} className="text-center">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-lg bg-gray-100 mb-6">
-                    <benefit.icon className="h-8 w-8 text-gray-600" />
+                <div key={index} className="text-center group">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-lg bg-green-100 mb-6 group-hover:bg-green-200 transition-colors">
+                    <benefit.icon className="h-8 w-8 text-green-600" />
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">
                     {benefit.title}
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 text-lg">
                     {benefit.description}
                   </p>
                 </div>
@@ -329,21 +402,29 @@ const HomePage: React.FC = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-16">
+        <section className="bg-gradient-to-r from-green-600 to-green-700 text-white py-16">
           <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Ready to Get Started?
+              Ready to Start Your Hustle?
             </h2>
-            <p className="text-xl mb-8 text-blue-100">
-              Join thousands of community members already connecting and helping each other
+            <p className="text-xl mb-8 text-green-100">
+              Join thousands of Nigerians already connecting and helping each other
             </p>
-            <Link
-              to="/professionals/directory"
-              className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 shadow-lg inline-flex items-center"
-            >
-              Find Help Now
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/professionals/directory"
+                className="bg-yellow-500 text-green-800 px-8 py-4 rounded-lg font-bold hover:bg-yellow-400 transition-colors duration-200 shadow-lg inline-flex items-center justify-center"
+              >
+                Find Person Wey Go Help Me
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+              <Link
+                to="/learn"
+                className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-bold hover:bg-white hover:text-green-600 transition-colors duration-200"
+              >
+                I Wan Learn Work
+              </Link>
+            </div>
           </div>
         </section>
       </div>
