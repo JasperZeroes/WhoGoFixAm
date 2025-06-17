@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { AdminProvider } from './contexts/AdminContext';
+import { AdminProvider, useAdmin } from './contexts/AdminContext';
 import Navigation from './components/Navigation';
 import HomePage from './pages/HomePage';
 import LearnSkillPage from './pages/LearnSkillPage';
@@ -17,10 +17,17 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 
 const AppContent: React.FC = () => {
   const { currentUser, userProfile, loading } = useAuth();
+  const { isAdmin, loading: adminLoading } = useAdmin();
   const navigate = useNavigate();
 
-  // Dashboard routing based on user role
+  // Dashboard routing based on user role with admin priority
   const getDashboardRoute = () => {
+    // PRIORITY 1: Check if user is admin first
+    if (isAdmin) {
+      return '/admin';
+    }
+    
+    // PRIORITY 2: Check user role
     if (!currentUser || !userProfile?.role) return '/';
     
     switch (userProfile.role) {
@@ -36,7 +43,7 @@ const AppContent: React.FC = () => {
   };
 
   // Show loading state while auth is initializing
-  if (loading) {
+  if (loading || adminLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
@@ -63,14 +70,21 @@ const AppContent: React.FC = () => {
         <Route path="/professionals/directory" element={<ProfessionalsDirectoryPage />} />
         <Route path="/professionals/:id" element={<ProfessionalProfilePage />} />
         
-        {/* Admin Routes */}
-        <Route path="/admin" element={<AdminDashboard />} />
+        {/* Admin Routes - Protected by admin check */}
+        <Route 
+          path="/admin" 
+          element={
+            isAdmin ? 
+              <AdminDashboard /> : 
+              <Navigate to="/" replace />
+          } 
+        />
         
         {/* Dashboard Routes */}
         <Route 
           path="/dashboard" 
           element={
-            currentUser && userProfile?.role ? 
+            currentUser ? 
               <Navigate to={getDashboardRoute()} replace /> : 
               <Navigate to="/" replace />
           } 
@@ -78,7 +92,7 @@ const AppContent: React.FC = () => {
         <Route 
           path="/dashboard/learner" 
           element={
-            currentUser && userProfile?.role === 'learner' ? 
+            currentUser && (userProfile?.role === 'learner' || isAdmin) ? 
               <LearnerDashboard /> : 
               <Navigate to="/" replace />
           } 
@@ -86,7 +100,7 @@ const AppContent: React.FC = () => {
         <Route 
           path="/dashboard/professional" 
           element={
-            currentUser && userProfile?.role === 'skilled-professional' ? 
+            currentUser && (userProfile?.role === 'skilled-professional' || isAdmin) ? 
               <ProfessionalDashboard /> : 
               <Navigate to="/" replace />
           } 
@@ -94,7 +108,7 @@ const AppContent: React.FC = () => {
         <Route 
           path="/dashboard/customer" 
           element={
-            currentUser && userProfile?.role === 'customer' ? 
+            currentUser && (userProfile?.role === 'customer' || isAdmin) ? 
               <CustomerDashboard /> : 
               <Navigate to="/" replace />
           } 

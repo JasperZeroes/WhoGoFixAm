@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, Wrench, User, LogOut, LayoutDashboard, Users } from 'lucide-react';
+import { Menu, X, Wrench, User, LogOut, LayoutDashboard, Users, Shield } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useAdmin } from '../contexts/AdminContext';
 import AuthModal from './auth/AuthModal';
 
 const Navigation: React.FC = () => {
@@ -11,6 +12,7 @@ const Navigation: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { currentUser, userProfile, logout, loading } = useAuth();
+  const { isAdmin, adminUser, loading: adminLoading } = useAdmin();
 
   const navLinks = [
     { path: '/', label: 'Home' },
@@ -45,6 +47,12 @@ const Navigation: React.FC = () => {
   };
 
   const getDashboardPath = () => {
+    // PRIORITY 1: Check if user is admin first
+    if (isAdmin) {
+      return '/admin';
+    }
+    
+    // PRIORITY 2: Check user role
     if (!userProfile?.role) return '/';
     
     switch (userProfile.role) {
@@ -58,6 +66,31 @@ const Navigation: React.FC = () => {
         return '/';
     }
   };
+
+  const getDashboardLabel = () => {
+    if (isAdmin) {
+      return 'Admin Dashboard';
+    }
+    return 'Dashboard';
+  };
+
+  const getUserDisplayInfo = () => {
+    if (isAdmin && adminUser) {
+      return {
+        name: adminUser.displayName,
+        role: adminUser.role === 'super-admin' ? 'Super Admin' : 'Admin',
+        roleColor: 'bg-red-100 text-red-800'
+      };
+    }
+    
+    return {
+      name: userProfile?.displayName || currentUser?.email,
+      role: userProfile?.role ? getRoleDisplayName(userProfile.role) : 'User',
+      roleColor: 'bg-blue-100 text-blue-800'
+    };
+  };
+
+  const userInfo = getUserDisplayInfo();
 
   return (
     <>
@@ -87,27 +120,31 @@ const Navigation: React.FC = () => {
               ))}
 
               {/* Auth Section */}
-              {!loading && currentUser ? (
+              {!loading && !adminLoading && currentUser ? (
                 <div className="flex items-center space-x-4">
-                  {/* Dashboard Link - Show for authenticated users with roles */}
-                  {userProfile?.role && (
-                    <Link
-                      to={getDashboardPath()}
-                      className="flex items-center space-x-1 text-blue-600 hover:text-blue-700 transition-colors bg-blue-50 px-3 py-2 rounded-lg"
-                    >
+                  {/* Dashboard Link - Show for authenticated users */}
+                  <Link
+                    to={getDashboardPath()}
+                    className={`flex items-center space-x-1 transition-colors px-3 py-2 rounded-lg ${
+                      isAdmin 
+                        ? 'text-red-600 hover:text-red-700 bg-red-50' 
+                        : 'text-blue-600 hover:text-blue-700 bg-blue-50'
+                    }`}
+                  >
+                    {isAdmin ? (
+                      <Shield className="h-4 w-4" />
+                    ) : (
                       <LayoutDashboard className="h-4 w-4" />
-                      <span className="text-sm font-medium">Dashboard</span>
-                    </Link>
-                  )}
+                    )}
+                    <span className="text-sm font-medium">{getDashboardLabel()}</span>
+                  </Link>
                   
                   <div className="flex items-center space-x-2 text-sm text-gray-600">
                     <User className="h-4 w-4" />
-                    <span>{userProfile?.displayName || currentUser.email}</span>
-                    {userProfile?.role && (
-                      <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
-                        {getRoleDisplayName(userProfile.role)}
-                      </span>
-                    )}
+                    <span>{userInfo.name}</span>
+                    <span className={`px-2 py-1 rounded-full text-xs ${userInfo.roleColor}`}>
+                      {userInfo.role}
+                    </span>
                   </div>
                   <button
                     onClick={handleLogout}
@@ -117,7 +154,7 @@ const Navigation: React.FC = () => {
                     <span className="text-sm">Logout</span>
                   </button>
                 </div>
-              ) : !loading ? (
+              ) : !loading && !adminLoading ? (
                 <div className="flex items-center space-x-4">
                   <button
                     onClick={() => handleAuthClick('login')}
@@ -171,30 +208,34 @@ const Navigation: React.FC = () => {
                 ))}
 
                 {/* Mobile Auth Section */}
-                {!loading && currentUser ? (
+                {!loading && !adminLoading && currentUser ? (
                   <div className="border-t pt-3 mt-3">
                     {/* Dashboard Link */}
-                    {userProfile?.role && (
-                      <Link
-                        to={getDashboardPath()}
-                        onClick={() => setIsOpen(false)}
-                        className="block px-3 py-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors flex items-center space-x-2"
-                      >
+                    <Link
+                      to={getDashboardPath()}
+                      onClick={() => setIsOpen(false)}
+                      className={`block px-3 py-2 rounded-md transition-colors flex items-center space-x-2 ${
+                        isAdmin 
+                          ? 'text-red-600 hover:bg-red-50' 
+                          : 'text-blue-600 hover:bg-blue-50'
+                      }`}
+                    >
+                      {isAdmin ? (
+                        <Shield className="h-4 w-4" />
+                      ) : (
                         <LayoutDashboard className="h-4 w-4" />
-                        <span>Dashboard</span>
-                      </Link>
-                    )}
+                      )}
+                      <span>{getDashboardLabel()}</span>
+                    </Link>
                     
                     <div className="px-3 py-2 text-sm text-gray-600">
                       <div className="flex items-center space-x-2 mb-2">
                         <User className="h-4 w-4" />
-                        <span>{userProfile?.displayName || currentUser.email}</span>
+                        <span>{userInfo.name}</span>
                       </div>
-                      {userProfile?.role && (
-                        <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
-                          {getRoleDisplayName(userProfile.role)}
-                        </span>
-                      )}
+                      <span className={`px-2 py-1 rounded-full text-xs ${userInfo.roleColor}`}>
+                        {userInfo.role}
+                      </span>
                     </div>
                     <button
                       onClick={handleLogout}
@@ -204,7 +245,7 @@ const Navigation: React.FC = () => {
                       <span>Logout</span>
                     </button>
                   </div>
-                ) : !loading ? (
+                ) : !loading && !adminLoading ? (
                   <div className="border-t pt-3 mt-3 space-y-2">
                     <button
                       onClick={() => {
