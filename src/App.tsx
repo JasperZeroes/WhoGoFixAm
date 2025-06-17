@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { AdminProvider } from './contexts/AdminContext';
 import Navigation from './components/Navigation';
 import HomePage from './pages/HomePage';
 import LearnSkillPage from './pages/LearnSkillPage';
@@ -12,6 +13,7 @@ import TrainingCentersPage from './pages/training/TrainingCentersPage';
 import ProfessionalRegistrationPage from './pages/professionals/ProfessionalRegistrationPage';
 import ProfessionalsDirectoryPage from './pages/professionals/ProfessionalsDirectoryPage';
 import ProfessionalProfilePage from './pages/professionals/ProfessionalProfilePage';
+import AdminDashboard from './pages/admin/AdminDashboard';
 
 const AppContent: React.FC = () => {
   const { currentUser, userProfile, loading } = useAuth();
@@ -61,6 +63,9 @@ const AppContent: React.FC = () => {
         <Route path="/professionals/directory" element={<ProfessionalsDirectoryPage />} />
         <Route path="/professionals/:id" element={<ProfessionalProfilePage />} />
         
+        {/* Admin Routes */}
+        <Route path="/admin" element={<AdminDashboard />} />
+        
         {/* Dashboard Routes */}
         <Route 
           path="/dashboard" 
@@ -106,9 +111,11 @@ const AppContent: React.FC = () => {
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <AppContent />
-      </Router>
+      <AdminProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </AdminProvider>
     </AuthProvider>
   );
 }
