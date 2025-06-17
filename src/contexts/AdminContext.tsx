@@ -78,23 +78,31 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       }
 
       try {
-        // Check if user has admin role in Firestore
+        // First, check if user has admin role in Firestore
         const adminDoc = await getDoc(doc(db, 'admins', currentUser.uid));
         
         if (adminDoc.exists()) {
           const adminData = adminDoc.data() as AdminUser;
           setIsAdmin(true);
           setAdminUser(adminData);
+          console.log('✅ Admin user found in database:', adminData.email);
         } else {
-          // For demo purposes, make the first user an admin
-          // In production, this would be set through Firebase Admin SDK
-          if (currentUser.email === 'admin@whogofixam.com' || 
-              currentUser.email === 'test@admin.com') {
+          // Check if this is a demo admin email
+          const demoAdminEmails = [
+            'admin@whogofixam.com',
+            'test@admin.com',
+            'admin@test.com',
+            'superadmin@whogofixam.com'
+          ];
+          
+          if (currentUser.email && demoAdminEmails.includes(currentUser.email.toLowerCase())) {
+            console.log('🔧 Creating demo admin account for:', currentUser.email);
+            
             const newAdmin: AdminUser = {
               uid: currentUser.uid,
-              email: currentUser.email || '',
-              displayName: currentUser.displayName || 'Admin',
-              role: 'admin',
+              email: currentUser.email,
+              displayName: currentUser.displayName || 'Admin User',
+              role: currentUser.email.includes('superadmin') ? 'super-admin' : 'admin',
               permissions: [
                 { resource: 'users', actions: ['read', 'write', 'delete'] },
                 { resource: 'professionals', actions: ['read', 'write', 'approve'] },
@@ -106,12 +114,16 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
               lastLogin: new Date()
             };
             
+            // Save admin to Firestore
             await addDoc(collection(db, 'admins'), newAdmin);
             setIsAdmin(true);
             setAdminUser(newAdmin);
+            
+            console.log('✅ Demo admin account created successfully!');
           } else {
             setIsAdmin(false);
             setAdminUser(null);
+            console.log('❌ User is not an admin:', currentUser.email);
           }
         }
       } catch (error) {
