@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Play, Clock, Users, Star, Award, BookOpen, Filter, Search, ChevronRight, CheckCircle, User, ArrowRight } from 'lucide-react';
+import { Play, Clock, Users, Star, Award, BookOpen, Filter, Search, ChevronRight, CheckCircle, User, ArrowRight, Heart, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import AuthModal from '../components/auth/AuthModal';
@@ -242,22 +242,22 @@ const LearnSkillPage: React.FC = () => {
     {
       icon: Users,
       title: 'Learn from Locals',
-      description: 'Connect with skilled people in your area'
+      description: 'Connect with skilled people wey dey your area — people wey understand your hustle'
     },
     {
       icon: Clock,
       title: 'Flexible Schedule',
-      description: 'Learn at your own pace and time'
+      description: 'Learn when e convenient for you — morning, afternoon, or night. Your time, your pace'
     },
     {
       icon: Star,
       title: 'Quality Instructors',
-      description: 'Verified and rated by the community'
+      description: 'All our instructors na verified professionals wey community don rate well well'
     },
     {
-      icon: BookOpen,
+      icon: Heart,
       title: 'Hands-on Learning',
-      description: 'Practical skills you can use immediately'
+      description: 'No just theory — you go practice the work with your hand until you sabi am proper'
     }
   ];
 
@@ -289,22 +289,23 @@ const LearnSkillPage: React.FC = () => {
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Learn a New Skill
             </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-              Master vocational skills with expert-led courses and connect with local professionals
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
+              You wan learn handwork? You don come the right place! We get plenty skilled people wey go teach you proper proper. 
+              From plumbing to tailoring, welding to barbing — make we help you learn wetin go put money for your pocket.
             </p>
           </div>
 
           {/* Benefits Section */}
-          <div className="bg-white rounded-xl shadow-sm p-8 mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">Why Learn with WhoGoFixAm?</h2>
+          <div className="bg-white rounded-xl shadow-sm p-8 mb-8 border-l-4 border-green-500">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">Why You Go Love Learning with WhoGoFixAm</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {benefits.map((benefit, index) => (
-                <div key={index} className="text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-blue-50 mb-4">
+                <div key={index} className="text-center group">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-blue-50 mb-4 group-hover:bg-blue-100 transition-colors">
                     <benefit.icon className="h-6 w-6 text-blue-600" />
                   </div>
                   <h3 className="font-medium text-gray-900 mb-2">{benefit.title}</h3>
-                  <p className="text-sm text-gray-600">{benefit.description}</p>
+                  <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
                 </div>
               ))}
             </div>
@@ -319,7 +320,7 @@ const LearnSkillPage: React.FC = () => {
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="Search courses, instructors, or skills..."
+                    placeholder="Search for courses, instructors, or skills wey you wan learn..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -366,24 +367,29 @@ const LearnSkillPage: React.FC = () => {
             <div className="text-center py-12">
               <BookOpen className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">No courses found</h3>
-              <p className="text-gray-600">Try adjusting your search or filter criteria</p>
+              <p className="text-gray-600">Try adjust your search or filter — maybe wetin you dey find dey another category</p>
             </div>
           )}
 
           {/* Training Centers CTA */}
-          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-8 mt-12">
+          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-8 mt-12 border-l-4 border-green-500">
             <div className="text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-lg bg-green-200 mb-6">
+                <Zap className="h-8 w-8 text-green-600" />
+              </div>
               <h2 className="text-2xl font-bold text-green-900 mb-4">
-                Prefer Hands-on Learning?
+                You Prefer Hands-on Learning?
               </h2>
-              <p className="text-green-700 mb-6 max-w-2xl mx-auto">
-                Visit our verified training centers for in-person, hands-on learning experiences with professional equipment and direct mentorship.
+              <p className="text-green-700 mb-6 max-w-3xl mx-auto text-lg leading-relaxed">
+                If you be person wey like touch and feel before you learn, visit our verified training centers. 
+                You go get proper equipment, face-to-face teaching, and other students wey dey learn with you. 
+                E dey sweet pass when you dey learn with people!
               </p>
               <Link
                 to="/training-centers"
-                className="bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition-colors font-medium inline-flex items-center"
+                className="bg-green-600 text-white px-8 py-4 rounded-lg hover:bg-green-700 transition-colors font-medium inline-flex items-center text-lg"
               >
-                Find Training Centers
+                Find Training Centers Near Me
                 <ChevronRight className="h-5 w-5 ml-2" />
               </Link>
             </div>
@@ -607,7 +613,7 @@ const AccessDeniedModal: React.FC<AccessDeniedModalProps> = ({ onClose, onAuthRe
       case 'not-logged-in':
         return {
           title: 'Login Required',
-          message: 'Please create an account or login as a Learner to access courses and demos.',
+          message: 'Oga/Madam, you need create account or login as Learner make you fit access courses and demos. E no hard at all!',
           actions: [
             { 
               text: 'Sign Up as Learner', 
@@ -630,7 +636,7 @@ const AccessDeniedModal: React.FC<AccessDeniedModalProps> = ({ onClose, onAuthRe
       case 'wrong-role':
         return {
           title: 'Learner Account Required',
-          message: 'You need to register or log in as a Learner to access this page. Create a learner account to enroll in courses and watch demos.',
+          message: 'You need register or login as Learner make you fit access this page. Create learner account make you fit enroll for courses and watch demos.',
           actions: [
             { 
               text: 'Create Learner Account', 
@@ -653,7 +659,7 @@ const AccessDeniedModal: React.FC<AccessDeniedModalProps> = ({ onClose, onAuthRe
       default:
         return {
           title: 'Access Denied',
-          message: 'You need to register or log in as a Learner to access this page.',
+          message: 'You need register or login as Learner make you fit access this page.',
           actions: [
             { 
               text: 'Sign Up as Learner', 
