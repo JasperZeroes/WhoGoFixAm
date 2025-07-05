@@ -1,6 +1,6 @@
 # WhoGoFixAm - Community Skills Platform
 
-A React-based web application that connects community members for learning, teaching, and problem-solving.
+A React-based web application that connects community members for learning vocational skills, and connecting them with users who need their services in turn.
 
 ## Features
 
